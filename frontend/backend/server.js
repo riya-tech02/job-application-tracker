@@ -14,8 +14,30 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://job-tracker-kra4i2noz-riyas-projects-6e47c769.vercel.app', // Vercel frontend
+  'https://job-tracker-app.onrender.com', // optional: Render frontend
+  'http://localhost:5173' // local dev
+];
+
+// Middleware: CORS
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `CORS policy does not allow access from origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Middleware: JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,6 +54,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Root route (friendly message)
+app.get('/', (req, res) => {
+  res.send('✅ Job Tracker Backend is running!');
+});
+
 // Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
@@ -46,8 +73,8 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
