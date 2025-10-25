@@ -1,3 +1,6 @@
+// ------------------------------
+// Import dependencies
+// ------------------------------
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,69 +15,84 @@ const authRoutes = require('./routes/auth');
 const applicationRoutes = require('./routes/applications');
 const adminRoutes = require('./routes/admin');
 
+// Initialize Express app
 const app = express();
 
-// Allowed origins for CORS
+// ------------------------------
+// ✅ CORS Configuration
+// ------------------------------
 const allowedOrigins = [
-  'https://job-tracker-kra4i2noz-riyas-projects-6e47c769.vercel.app', // Vercel frontend
-  'https://job-tracker-app.onrender.com', // optional: Render frontend
-  'http://localhost:5173' // local dev
+  'https://job-tracker-kra4i2noz-riyas-projects-6e47c769.vercel.app', // ✅ Your Vercel frontend
+  'https://job-tracker-app.onrender.com', // Optional (if you test via Render frontend)
+  'http://localhost:5173', // For local development
 ];
 
-// Middleware: CORS
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `CORS policy does not allow access from origin: ${origin}`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
 
-// Middleware: JSON
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log(`❌ CORS blocked request from: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  })
+);
+
+// Handle preflight requests
+app.options('*', cors());
+
+// ------------------------------
+// Middleware
+// ------------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files
+// Serve static files (like uploads)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI)
+// ------------------------------
+// MongoDB Connection
+// ------------------------------
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
+// ------------------------------
 // Routes
+// ------------------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/admin', adminRoutes);
-
-// Root route (friendly message)
-app.get('/', (req, res) => {
-  res.send('✅ Job Tracker Backend is running!');
-});
 
 // Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-// Error handling middleware
+// ------------------------------
+// Global Error Handler
+// ------------------------------
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
-    message: 'Something went wrong!', 
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+  res.status(500).json({
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 
-// Start server
+// ------------------------------
+// Start Server
+// ------------------------------
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
