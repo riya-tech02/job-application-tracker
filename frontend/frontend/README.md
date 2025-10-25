@@ -460,8 +460,4 @@ For issues or questions:
 
 ---
 
-<<<<<<< HEAD
 **Made with  for efficient job application management**
-=======
-**Made with  for efficient job application management**
->>>>>>> 2d36ad1 (Initial frontend commit)
