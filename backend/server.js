@@ -22,11 +22,11 @@ const app = express();
 // ✅ CORS Configuration
 // ------------------------------
 const allowedOrigins = [
-  'https://job-tracker-kra4i2noz-riyas-projects-6e47c769.vercel.app', // ✅ Your Vercel frontend
-  'https://job-tracker-app.onrender.com', // Optional (if you test via Render frontend)
-  'http://localhost:5173', // For local development
+  'http://localhost:5173',
+  'https://job-tracker-app.vercel.app',
+  'https://job-application-tracker-mu-seven.vercel.app',
+  'https://job-application-tracker-sigma-smoky.vercel.app'  // Add this line!
 ];
-
 app.use(
   cors({
     origin: function (origin, callback) {
