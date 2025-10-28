@@ -8,6 +8,7 @@ import ApplicationForm from './components/application/ApplicationForm';
 import ApplicationList from './components/application/ApplicationList';
 import ApplicationDetails from './components/admin/ApplicationDetails';
 import AdminDashboard from './components/admin/AdminDashboard';
+import GlobalJobSearch from './components/GlobalJobSearch';
 
 function App() {
   return (
@@ -65,6 +66,10 @@ function App() {
             />
 
             {/* Default Route */}
+
+            {/* Global Job Search */}
+            <Route path="/global-jobs" element={<GlobalJobSearch userId={null} />} />
+
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
