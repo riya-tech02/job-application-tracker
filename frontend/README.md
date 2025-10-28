@@ -460,7 +460,4 @@ For issues or questions:
 
 ---
 
-
 **Made with  for efficient job application management**
-
-
