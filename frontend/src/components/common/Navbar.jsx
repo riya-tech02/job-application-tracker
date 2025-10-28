@@ -23,55 +23,36 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
-
           <div className="flex items-center space-x-4">
             {user && (
               <>
                 {isAdmin ? (
-                  <Link
-                    to="/admin"
-                    className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                  >
+                  <Link to="/admin" className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
                     <LayoutDashboard className="h-5 w-5" />
                     <span>Admin Dashboard</span>
                   </Link>
                 ) : (
                   <>
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                    >
+                    <Link to="/dashboard" className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
                       <User className="h-5 w-5" />
                       <span>My Applications</span>
                     </Link>
-                    <Link
-                      to="/apply"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                    >
+                    <Link to="/apply" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                       Apply Now
+                    </Link>
+                    <Link to="/global-jobs" className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                      <span>🌍</span>
+                      <span>Global Search</span>
                     </Link>
                   </>
                 )}
               </>
             )}
-
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <Sun className="h-5 w-5 text-yellow-500" />
-              ) : (
-                <Moon className="h-5 w-5 text-gray-700" />
-              )}
+            <button onClick={toggleDarkMode} className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+              {darkMode ? <Sun className="h-5 w-5 text-yellow-500" /> : <Moon className="h-5 w-5 text-gray-700" />}
             </button>
-
             {user && (
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-              >
+              <button onClick={handleLogout} className="flex items-center space-x-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
               </button>
