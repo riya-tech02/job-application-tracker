@@ -2,6 +2,54 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
+// GET /api/global-jobs - Return sample jobs
+router.get('/', (req, res) => {
+  const sampleJobs = [
+    {
+      id: 1,
+      externalId: 'job_1',
+      title: 'Full Stack Developer',
+      company: 'Tech Corp',
+      location: 'Remote, India',
+      salary: '₹8-12 LPA',
+      description: 'Looking for experienced Full Stack developers',
+      employmentType: 'Full-time',
+      isRemote: true,
+      applyLink: '#'
+    },
+    {
+      id: 2,
+      externalId: 'job_2',
+      title: 'Frontend Developer',
+      company: 'Web Solutions',
+      location: 'Bangalore, India',
+      salary: '₹6-10 LPA',
+      description: 'Seeking talented Frontend developers',
+      employmentType: 'Full-time',
+      isRemote: false,
+      applyLink: '#'
+    },
+    {
+      id: 3,
+      externalId: 'job_3',
+      title: 'Backend Developer',
+      company: 'Cloud Systems',
+      location: 'Delhi, India',
+      salary: '₹7-11 LPA',
+      description: 'Backend development opportunity',
+      employmentType: 'Full-time',
+      isRemote: true,
+      applyLink: '#'
+    }
+  ];
+
+  res.json({
+    success: true,
+    data: sampleJobs,
+    total: sampleJobs.length
+  });
+});
+
 // GET /api/global-jobs/search
 router.get('/search', async (req, res) => {
   try {
